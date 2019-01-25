@@ -3,7 +3,7 @@ info:
   title: HMIS Developer Service
   version: 1.0.0
 servers:
-  - url: 'https://www.hmislynk.com/hmis-developer-service/rest'
+  - url: 'https://www.hslynk.com/hmis-developer-service/rest'
 paths:
   /developercompanies:
     get:
@@ -68,173 +68,6 @@ paths:
           description: Trusted App id should be provide in this header.
           schema:
             type: string
-    post:
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  developerCompany:
-                    developerCompanyId: 5EAD0155-AD7D-47AF-A604-AE965787CEA5
-                    name: Servinglynk
-                    domain: servinglynk.com
-                    logoUrl: www.servinglynk.com
-                    owner:
-                      username: superadmin@hmis.com
-                      twoFactorAuthentication: false
-                      preferences: {}
-                    companySkillSet: JAVA/J2EE
-                    appExperience: '10'
-                    companySize: 100
-                    appPlatforms: Android & Apple
-                    contactEmail: superadmin@hmis.com
-                    status: SUBMITTED
-        '400':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: MISSING_PARAMETER
-                      message: >-
-                        Some of the required element/query parameter/header
-                        values are not specified (or missing) in the request.
-        '403':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: ACCESS_DENIED
-                      message: >-
-                        The developer company could not be created because the
-                        trustedApp submitting the request was not authorized to
-                        do so.
-        '500':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: UNKNOWN
-                      message: >-
-                        An internal service/server error occurred. (e.g.
-                        database is down, etc.).
-      description: >
-        It creates a new developer company with the specified account as the
-        owner/admin. It performs the following logic:
-
-        <ul>
-          <li> It will get session taken from the request header and gets login user details. And assign that user as owner of the developer company.</li>
-            </ul>
-          </li>
-        </ul>
-      operationId: POST_developercompanies
-      requestBody:
-        content:
-          application/json:
-            example:
-              developerCompany:
-                name: Servinglynk
-                domain: servinglynk.com
-                logoUrl: www.servinglynk.com
-                companySkillSet: JAVA/J2EE
-                appExperience: '10'
-                companySize: 100
-                appPlatforms: Android & Apple
-                contactEmail: superadmin@hmis.com
-            schema:
-              type: string
-        required: true
-      parameters:
-        - name: Authorization
-          in: header
-          required: true
-          description: >-
-            Authorization request header should specify as HMISUserAuth
-            session_token={sessiontokenvalue}.
-          schema:
-            type: string
-        - name: X-HMIS-TrustedApp-Id
-          in: header
-          required: true
-          description: Trusted App id should be provide in this header.
-          schema:
-            type: string
-  '/developercompanies/{developercompanyid}':
-    put:
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  developerCompany:
-                    developerCompanyId: AA8F9FD9-532D-4D59-B397-5D94CEC6A868
-                    name: Amazing Inc.
-                    domain: www.amazing.com
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: DEVELOPER_COMPANY_NOT_FOUND
-                      message: >-
-                        A developer company with the specified
-                        developerCompanyId is not found.
-      description: >
-        Updates a specific developer company. Only the accounts associated with
-        a developer company in "ADMIN" role can update that developer company.
-      operationId: PUT_developercompanies-developercompanyid
-      requestBody:
-        content:
-          application/json:
-            example:
-              developerCompany:
-                domain: www.amazing.com
-                logoUrl: 'Company Logo URL '
-                companySize: '100'
-                appExperience: Mobile apps
-                companySkillSet: skill set
-                appPlatforms: 'iOS,Windows'
-                expectedAppFinishDate: '2013-03-26'
-                contactEmail: info@amazing.com
-            schema:
-              type: string
-        required: true
-      parameters:
-        - name: Authorization
-          in: header
-          required: true
-          description: >-
-            Authorization request header should specify as HMISUserAuth
-            session_token={sessiontokenvalue}.
-          schema:
-            type: string
-        - name: X-HMIS-TrustedApp-Id
-          in: header
-          required: true
-          description: Trusted App id should be provide in this header.
-          schema:
-            type: string
-    parameters:
-      - name: developercompanyid
-        in: path
-        required: true
-        schema:
-          type: string
   '/developercompanies/{developercompanyid}/approvaldecision':
     post:
       responses:
@@ -244,7 +77,7 @@ paths:
             application/json:
               schema:
                 example:
-                  developerCompanyStatus: '  '
+                    developerCompanyStatus: {}
         '403':
           description: ''
           content:
@@ -278,6 +111,7 @@ paths:
 
         A developer company can be approved or rejected only if its current
         status is SUBMITTED.
+        status attribute accepted values are ACTIVE and REJECTED
       operationId: POST_developercompanies-developercompanyid-approvaldecision
       requestBody:
         content:
@@ -376,6 +210,11 @@ paths:
           description: Trusted App id should be provide in this header.
           schema:
             type: string
+        - name : developercompanyid
+          required : true
+          in: path
+          schema:
+            type: string
         - name: startIndex
           in: query
           schema:
@@ -386,150 +225,6 @@ paths:
           schema:
             default: '30'
             type: string
-    post:
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  developerCompanyAccount: ' '
-        '403':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: DEVELOPER_COMPANY_ACCOUNT_ALREADY_EXISTS
-                      message: >-
-                        The specified account is already associated with the
-                        specified developer company.
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: ACCOUNT_NOT_FOUND
-                      message: The account with the specified username is not found.
-      description: >
-        It associates an account with a specific developer company. Only the
-        accounts associated with a developer company in "ADMIN" role can perform
-        this operation for that developer company.
-      operationId: POST_developercompanies-developercompanyid-accounts
-      requestBody:
-        content:
-          application/json:
-            example:
-              developerCompanyAccount:
-                account:
-                  username: xyz@gmail.com
-                role: BASIC
-            schema:
-              type: string
-        required: true
-      parameters:
-        - name: Authorization
-          in: header
-          required: true
-          description: >-
-            Authorization request header should specify as HMISUserAuth
-            session_token={sessiontokenvalue}.
-          schema:
-            type: string
-        - name: X-HMIS-TrustedApp-Id
-          in: header
-          required: true
-          description: Trusted App id should be provide in this header.
-          schema:
-            type: string
-    parameters:
-      - name: developercompanyid
-        in: path
-        required: true
-        schema:
-          type: string
-  '/developercompanies/{developercompanyid}/accounts/{username}':
-    delete:
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  developerCompanyAccount: ' '
-        '403':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: DEVELOPER_COMPANY_OWNER_DISASSOCIATION_NOT_ALLOWED
-                      message: >-
-                        The specified account is the owner of the developer
-                        company and we do not allow dissociating an owner
-                        account from the developer company.
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: ACCOUNT_NOT_FOUND
-                      message: The account with the specified username is not found.
-      description: >
-        Dissociates an account from a specific developer company. Only the
-        accounts associated with a developer company in "ADMIN" role can perform
-        this operation for that developer company.
-
-        The {developerCompanyId} is a value that uniquely identifies a developer
-        company.
-
-        The {username} is a value that uniquely identifies an account.
-
-        The {developerCompanyId} and {username} together uniquely identify a
-        developer-company-account association.
-
-
-        <b>NOTE:</b> An owner account can not be dissociated from the developer
-        company.
-      operationId: DELETE_developercompanies-developercompanyid-accounts-username
-      parameters:
-        - name: Authorization
-          in: header
-          required: true
-          description: >-
-            Authorization request header should specify as HMISUserAuth
-            session_token={sessiontokenvalue}.
-          schema:
-            type: string
-        - name: X-HMIS-TrustedApp-Id
-          in: header
-          required: true
-          description: Trusted App id should be provide in this header.
-          schema:
-            type: string
-    parameters:
-      - name: username
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: developercompanyid
-        in: path
-        required: true
-        schema:
-          type: string
   '/developercompanies/{developercompanyid}/services':
     get:
       responses:
@@ -589,6 +284,11 @@ paths:
           description: Trusted App id should be provide in this header.
           schema:
             type: string
+        - name : developercompanyid
+          required : true
+          in: path
+          schema:
+            type: string            
         - name: startIndex
           in: query
           schema:
@@ -599,78 +299,6 @@ paths:
           schema:
             default: '30'
             type: string
-    post:
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  service:
-                    serviceId: AA8F9FD9-532D-4D59-B397-5D94CEC6A868
-        '403':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: INVALID_SESSION_TOKEN
-                      message: >-
-                        The specified session/access token is not valid or has
-                        expired.
-        '409':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: SERVICE_NAME_ALREADY_EXISTS
-                      message: >-
-                        A service with the specified friendly name already
-                        exists. The friendly name of the service must be
-                        globally unique.
-      description: >
-        It creates a new service for the specified developer company. The
-        initial status of the newly created service is <b>IN_DEVELOPMENT<b>.
-        Only the accounts associated with a developer company in "ADMIN" role
-        can perform this operation for that developer company.
-      operationId: POST_developercompanies-developercompanyid-services
-      requestBody:
-        content:
-          application/json:
-            example:
-              service:
-                friendlyName: I am sample service
-                description: I am sample service description
-            schema:
-              type: string
-        required: true
-      parameters:
-        - name: Authorization
-          in: header
-          required: true
-          description: >-
-            Authorization request header should specify as HMISUserAuth
-            session_token={sessiontokenvalue}.
-          schema:
-            type: string
-        - name: X-HMIS-TrustedApp-Id
-          in: header
-          required: true
-          description: Trusted App id should be provide in this header.
-          schema:
-            type: string
-    parameters:
-      - name: developercompanyid
-        in: path
-        required: true
-        schema:
-          type: string
   '/developercompanies/{serviceid}':
     get:
       responses:
@@ -715,198 +343,11 @@ paths:
           description: Trusted App id should be provide in this header.
           schema:
             type: string
-    put:
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  service:
-                    serviceId: ACEFB4904535-2C97-4BF2-AF61-22095B4D
-                    friendlyName: I am home service
-                    description: sample service description
-                    status: ACTIVE
-        '403':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: ILLEGAL_STATE
-                      message: >-
-                        The service can not be updated because its status is not
-                        IN_DEVELOPMENT.
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: SERVICE_NOT_FOUND
-                      message: A service with the specified serviceId is not found.
-        '409':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: SERVICE_NAME_ALREADY_EXISTS
-                      message: >-
-                        A service with the specified friendly name already
-                        exists. The friendly name of the service must be
-                        globally unique.
-      description: >-
-        Updates a specific service. Only the accounts associated with a
-        developer company in "ADMIN" role can perform this operation for that
-        developer company.A service can be updated only if its status is
-        IN_DEVELOPMENT.
-      operationId: PUT_developercompanies-serviceid
-      requestBody:
-        content:
-          application/json:
-            example:
-              service:
-                friendlyName: sample service
-                description: sample service description
-            schema:
-              type: string
-        required: true
-    delete:
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  service: ''
-        '403':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: ILLEGAL_STATE
-                      message: >-
-                        The service can not be updated because its status is not
-                        IN_DEVELOPMENT.
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: SERVICE_NOT_FOUND
-                      message: A service with the specified serviceId is not found.
-      description: >
-        Deletes a specific service. Only the accounts associated with a
-        developer company in "ADMIN" role can perform this operation for that
-        developer company. A service can be deleted only if its status is
-        IN_DEVELOPMENT and there are no trustedApps associated.
-      operationId: DELETE_developercompanies-serviceid
-      parameters:
-        - name: Authorization
-          in: header
-          required: true
-          description: >-
-            Authorization request header should specify as HMISUserAuth
-            session_token={sessiontokenvalue}.
+        - name : serviceid
+          required : true
+          in: path
           schema:
-            type: string
-        - name: X-HMIS-TrustedApp-Id
-          in: header
-          required: true
-          description: Trusted App id should be provide in this header.
-          schema:
-            type: string
-    parameters:
-      - name: serviceid
-        in: path
-        required: true
-        schema:
-          type: string
-  '/services/{serviceid}/approvalsubmission':
-    post:
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  serviceStatus: ' '
-        '403':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: ILLEGAL_STATE
-                      message: >-
-                        The service can not be updated because its status is not
-                        IN_DEVELOPMENT.
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: SERVICE_NOT_FOUND
-                      message: A service with the specified serviceId is not found.
-      description: >-
-        It submits the specified service for approval. The status of the service
-        is changed to SUBMITTED and an email is sent to the owner of the
-        developer company stating that the service has been submitted for
-        approval. A service can be submitted for approval only if its status is
-        IN_DEVELOPMENT. Only the accounts associated with a developer company in
-        "ADMIN" role can perform this operation for that developer company.
-      operationId: POST_services-serviceid-approvalsubmission
-      requestBody:
-        content:
-          application/json:
-            example:
-              serviceStatus:
-                comment: submitting service for approval.
-            schema:
-              type: string
-        required: true
-      parameters:
-        - name: Authorization
-          in: header
-          required: true
-          description: >-
-            Authorization request header should specify as HMISUserAuth
-            session_token={sessiontokenvalue}.
-          schema:
-            type: string
-        - name: X-HMIS-TrustedApp-Id
-          in: header
-          required: true
-          description: Trusted App id should be provide in this header.
-          schema:
-            type: string
-    parameters:
-      - name: serviceid
-        in: path
-        required: true
-        schema:
-          type: string
+            type: string            
   '/services/{serviceid}/approvaldecision':
     post:
       responses:
@@ -949,6 +390,7 @@ paths:
 
         A service can be approved or rejected only if its current status is
         SUBMITTED.
+        status attribute allowed values are ACTIVE and REJECTED
       operationId: POST_services-serviceid-approvaldecision
       requestBody:
         content:
@@ -1061,64 +503,11 @@ paths:
           schema:
             default: '30'
             type: string
-    post:
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  trustedApp:
-                    trustedAppId: AA8F9FD9-532D-4D59-B397-5D94CEC6A868
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: SERVICE_NOT_FOUND
-                      message: A service with the specified serviceId is not found.
-      description: >
-        It creates a new trustedApp for the specified service. The initial
-        status of the newly created trustedApp is IN_DEVELOPMENT.
-
-        Only the accounts associated with a developer company in "ADMIN" role
-        can perform this operation for that developer company.
-      operationId: POST_services-serviceid-trustedapps
-      requestBody:
-        content:
-          application/json:
-            example:
-              trustedApp:
-                friendlyName: sample trusted app
-                description: sample trusted app description
-            schema:
-              type: string
-        required: true
-      parameters:
-        - name: Authorization
-          in: header
-          required: true
-          description: >-
-            Authorization request header should specify as HMISUserAuth
-            session_token={sessiontokenvalue}.
+        - name : serviceid
+          required : true
+          in: path
           schema:
-            type: string
-        - name: X-HMIS-TrustedApp-Id
-          in: header
-          required: true
-          description: Trusted App id should be provide in this header.
-          schema:
-            type: string
-    parameters:
-      - name: serviceid
-        in: path
-        required: true
-        schema:
-          type: string
+            type: string            
   '/services/{trustedappid}':
     get:
       responses:
@@ -1166,139 +555,11 @@ paths:
           description: Trusted App id should be provide in this header.
           schema:
             type: string
-    put:
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  trustedApp:
-                    trustedAppTypeId: 631D1191-9AC5-4F3F-836A-8DB0DBAE3CD3
-                    friendlyname: Friendly Name
-                    description: Description
-                    status: IN_DEVELOPMENT
-                    trustedAppSecret: 7432e99debbe4fd1af0ea6eb65b4f3e4
-        '403':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: ILLEGAL_STATE
-                      message: >-
-                        The trustedApp can not be updated because its current
-                        status is not IN_DEVELOPMENT.
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: CLIENT_NOT_FOUND
-                      message: >-
-                        A trustedApp with the specified trustedAppId is not
-                        found.
-      description: >-
-        Updates a specific trustedApp. Only the accounts associated with a
-        developer company in "ADMIN" role can perform this operation for that
-        developer company. Only certain trustedApp fields can be updated if its
-        status is not IN_DEVELOPMENT. See table below.
-      operationId: PUT_services-trustedappid
-      requestBody:
-        content:
-          application/json:
-            example:
-              trustedApp:
-                trustedAppTypeId: 631D1191-9AC5-4F3F-836A-8DB0DBAE3CD3
-                friendlyname: Friendly Name
-                description: Description
-                status: IN_DEVELOPMENT
-                trustedAppSecret: 7432e99debbe4fd1af0ea6eb65b4f3e4
-            schema:
-              type: string
-        required: true
-      parameters:
-        - name: Authorization
-          in: header
-          required: true
-          description: >-
-            Authorization request header should specify as HMISUserAuth
-            session_token={sessiontokenvalue}.
+        - name : trustedappid
+          required : true
+          in: path
           schema:
-            type: string
-        - name: X-HMIS-TrustedApp-Id
-          in: header
-          required: true
-          description: Trusted App id should be provide in this header.
-          schema:
-            type: string
-    delete:
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  trustedApp: ''
-        '403':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: ILLEGAL_STATE
-                      message: >-
-                        The trustedApp can not be updated because its current
-                        status is not IN_DEVELOPMENT.
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: CLIENT_NOT_FOUND
-                      message: >-
-                        A trustedApp with the specified trustedAppId is not
-                        found.
-      description: >
-        Deletes a specific trustedApp. Only the accounts associated with a
-        developer company in "ADMIN" role can perform this operation for that
-        developer company.
-
-        A trustedApp can be deleted only if its status is IN_DEVELOPMENT.
-      operationId: DELETE_services-trustedappid
-      parameters:
-        - name: Authorization
-          in: header
-          required: true
-          description: >-
-            Authorization request header should specify as HMISUserAuth
-            session_token={sessiontokenvalue}.
-          schema:
-            type: string
-        - name: X-HMIS-TrustedApp-Id
-          in: header
-          required: true
-          description: Trusted App id should be provide in this header.
-          schema:
-            type: string
-    parameters:
-      - name: trustedappid
-        in: path
-        required: true
-        schema:
-          type: string
+            type: string            
   '/services/{trustedappid}/trustedappsecret':
     put:
       responses:
@@ -1349,81 +610,7 @@ paths:
         required: true
         schema:
           type: string
-  '/services/{trustedappid}/approvalsubmission':
-    post:
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  'trustedAppStatus ': ' '
-        '403':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: ILLEGAL_STATE
-                      message: >-
-                        TThe specified trustedApp can not be submitted for
-                        approval because its current status is not
-                        IN_DEVELOPMENT.
-        '404':
-          description: ''
-          content:
-            application/json:
-              schema:
-                example:
-                  errors:
-                    error:
-                      code: CLIENT_NOT_FOUND
-                      message: >-
-                        A trustedApp with the specified trustedAppId is not
-                        found.
-      description: >
-        It submits the specified trustedApp for approval. The status of the
-        trustedApp is changed to SUBMITTED and an email is sent to the owner of
-        the developer company stating that the trustedApp/app has been submitted
-        for approval.
 
-        A trustedApp can be submitted for approval only if its status is
-        IN_DEVELOPMENT. Only the accounts associated with a developer company in
-        "ADMIN" role can perform this operation for that developer company.
-      operationId: POST_services-trustedappid-approvalsubmission
-      requestBody:
-        content:
-          application/json:
-            example:
-              trustedAppStatus:
-                comment: submitting IOS trustedApp for approval.
-            schema:
-              type: string
-        required: true
-      parameters:
-        - name: Authorization
-          in: header
-          required: true
-          description: >-
-            Authorization request header should specify as HMISUserAuth
-            session_token={sessiontokenvalue}.
-          schema:
-            type: string
-        - name: X-HMIS-TrustedApp-Id
-          in: header
-          required: true
-          description: Trusted App id should be provide in this header.
-          schema:
-            type: string
-    parameters:
-      - name: trustedappid
-        in: path
-        required: true
-        schema:
-          type: string
   '/services/{trustedappid}/approvaldecision':
     post:
       responses:
@@ -1516,7 +703,7 @@ components:
       type: oauth2
       flows:
         password:
-          tokenUrl: 'https://hmislynk.com/hmis-authorization-service/rest/token'
+          tokenUrl: 'https://hslynk.com/hmis-authorization-service/rest/token'
           scopes:
             user: ''
             administrator: ''
