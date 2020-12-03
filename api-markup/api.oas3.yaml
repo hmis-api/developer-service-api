@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: HMIS Developer Service
-  version: 1.0.1
+  version: 1.0.2
   contact:
     name: API Source
     email: support@hslynk.com
@@ -11,7 +11,7 @@ info:
     name: Open Source License
     url: https://github.com/hmis-api/developer-service-api/blob/master/LICENSE
 servers:
-  - url: 'https://api.hslynk.com/hmis-developer-service/rest'
+  - url: 'https://developers.hslynk.com/hmis-developer-service/rest'
 paths:
   /developercompanies:
     get:
